@@ -1,0 +1,104 @@
+
+:root {
+    --primary-color: #4CAF50;
+    --primary-dark: #45a049;
+    --text-light: #ffffff;
+    --text-dark: #333333;
+    --background-light: #f0f0f0;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  #scraper-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10000;
+    padding: 15px 25px;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+  }
+  
+  #scraper-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .scraper-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+  
+  #scraper-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 30px;
+    background-color: var(--background-light);
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+    z-index: 10001;
+  }
+  
+  #scraper-form h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  #scraper-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+    font-weight: bold;
+  }
+  
+  #scraper-form input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  #scraper-form button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+  }
+  
+  #scraper-form button:hover {
+    background-color: var(--primary-dark);
+  }
