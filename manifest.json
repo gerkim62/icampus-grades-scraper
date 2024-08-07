@@ -1,25 +1,23 @@
 {
-    "manifest_version": 3,
-    "name": "Scraper Extension",
-    "version": "1.0",
-    "description": "A simple scraper extension",
-    "permissions": ["activeTab", "scripting"],
-    "action": {
-      "default_icon": {
-      }
-    },
-    "content_scripts": [
-      {
-        "matches": ["<all_urls>"],
-        "js": ["content.js"],
-        "css": ["styles.css"]
-      }
-    ],
-    "web_accessible_resources": [
-      {
-        "resources": ["content.js"],
-        "matches": ["<all_urls>"]
-      }
-    ]
-  }
-  
+  "manifest_version": 3,
+  "name": "Scraper Extension",
+  "version": "1.0",
+  "description": "Made by developer.gerison",
+  "permissions": [],
+  "action": {
+    "default_icon": {}
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://icampus.ueab.ac.ke/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["content.js"],
+      "matches": ["https://icampus.ueab.ac.ke/*"]
+    }
+  ]
+}

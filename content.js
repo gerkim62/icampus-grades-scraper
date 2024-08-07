@@ -1,5 +1,43 @@
 console.log("Content script running...");
 
+if (!location.href.includes("ueab.ac.ke"))
+  throw "Not executing on non ueab website";
+
+let totalToScrape = 0;
+let totalScraped = 0;
+
+function updateProgress() {
+  const progress = document.querySelector("#scraper-form h2 span");
+  progress.textContent = `${totalScraped}/${totalToScrape}`;
+
+  totalScraped++;
+}
+
+function initProgress(total) {
+  totalToScrape = total;
+  totalScraped = 0;
+  const progress = document.querySelector("#scraper-form h2 span");
+  progress.textContent = `0/${total}`;
+
+  // disable the form
+  document.getElementById("start-id").disabled = true;
+  document.getElementById("end-id").disabled = true;
+  document.getElementById("scrape-now").disabled = true;
+}
+
+function finishProgress() {
+  const progress = document.querySelector("#scraper-form h2 span");
+  progress.textContent = `${totalToScrape}/${totalToScrape}`;
+
+  totalScraped = totalToScrape;
+
+  // enable the form
+
+  document.getElementById("start-id").disabled = false;
+  document.getElementById("end-id").disabled = false;
+  document.getElementById("scrape-now").disabled = false;
+}
+
 // Create and inject the Scraper button
 const scraperButton = document.createElement("button");
 scraperButton.id = "scraper-button";
@@ -13,6 +51,8 @@ document.body.appendChild(overlay);
 overlay.style.display = "none";
 
 overlay.addEventListener("click", () => {
+  if (totalScraped !== totalToScrape) return;
+
   overlay.style.display = "none";
   form.style.display = "none";
 });
@@ -22,17 +62,20 @@ const form = document.createElement("form");
 form.id = "scraper-form";
 form.style.display = "none"; // Initially hide the form
 form.innerHTML = `
-  <h2>Scraper Form</h2>
+  <h2>Scraper (<span>0/0<span>)</h2>
+  
   <label for="start-id">Starting ID:</label>
-  <input required type="number" id="start-id" required>
+  <input placeholder='e.g 1019' required type="number" id="start-id" required>
   <label for="end-id">Ending ID:</label>
-  <input required type="number" id="end-id" required>
+  <input placeholder="e.g 1025" required type="number" id="end-id" required>
   <button id="scrape-now">Scrape Now</button>
 `;
 document.body.appendChild(form);
 
 // Add event listeners
 scraperButton.addEventListener("click", () => {
+  if (totalScraped !== totalToScrape) return;
+
   form.style.display = form.style.display === "none" ? "block" : "none";
   overlay.style.display = overlay.style.display === "none" ? "block" : "none";
 });
@@ -48,18 +91,36 @@ form.addEventListener("submit", (e) => {
 });
 
 async function scrapeStudentDetails(startId, endId) {
+  const isLoggedIn = await checkIsLoggedIn();
+
+  if (!isLoggedIn) {
+    const proceed = confirm(
+      "The scraper will not function properly unless you are logged in to iCampus. If you are willing to proceed with invalid data, please click 'OK'. Otherwise, please log in first."
+    );
+
+    if (!proceed) return;
+  }
+
+  if (startId > endId) {
+    alert("Starting ID cannot be greater than Ending ID");
+    return;
+  }
   const idsToScrape = Array.from(
     { length: endId - startId + 1 },
     (_, i) => startId + i
   );
 
-  console.log(idsToScrape);
+  initProgress(idsToScrape.length);
 
   console.log(`Starting to scrape ${idsToScrape.length} students...`);
 
   const promises = idsToScrape.map((id) => getStudentDetails(id));
 
   const data = await Promise.all(promises);
+
+  downloadJson(data);
+
+  finishProgress();
 
   console.log(data);
 }
@@ -103,15 +164,17 @@ async function getStudentDetails(id) {
 
   //   console.log(student);
   console.log(`Student with ID ${id} scraped successfully!`);
+  updateProgress();
   return student;
 }
 
 function htmlTableToJson(table) {
-  console.log(table);
+  // console.log(table);
   if (!table)
     return [
       {
-        Error: "No data found",
+        Error:
+          "No data found. Either the student id does not exist or you are not logged in.",
       },
     ];
   const headers = [];
@@ -138,4 +201,39 @@ function htmlTableToJson(table) {
   }
 
   return jsonData;
+}
+
+function downloadJson(jsonArray) {
+  // Convert the JavaScript array object to a JSON string
+  const jsonString = JSON.stringify(jsonArray);
+
+  // Create a Blob from the JSON string
+  const blob = new Blob([jsonString], { type: "application/json" });
+
+  // Create a URL for the Blob
+  const url = URL.createObjectURL(blob);
+
+  // Create an anchor element
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "data.json"; // Specify the file name
+
+  // Programmatically click the anchor element to trigger the download
+  document.body.appendChild(a);
+  a.click();
+
+  // Remove the anchor element from the document
+  document.body.removeChild(a);
+
+  // Revoke the object URL to free up memory
+  URL.revokeObjectURL(url);
+}
+
+async function checkIsLoggedIn() {
+  const res = await fetch(`https://icampus.ueab.ac.ke/iStudent/Auth/Classes/`);
+  const text = await res.text();
+
+  const hasLogoutButton = text.includes(`Logout`);
+
+  return hasLogoutButton;
 }
