@@ -1,4 +1,4 @@
-# iCampus Grades Scraper - Download the grades of everyone in UEAB
+# iCampus Grades Scraper - Download the grades of everyone
 
 <!-- Disclaimer -->
 
