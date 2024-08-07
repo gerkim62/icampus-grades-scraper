@@ -162,6 +162,7 @@ async function getStudentDetails(id) {
   const pendingCoursesTable = doc.querySelector(pendingCoursesTableSelector);
 
   const student = {
+    id,
     basicDetails: htmlTableToJson(applicantDetailsTable),
     perfomanceSummary: htmlTableToJson(summaryTable),
     finishedCourses: htmlTableToJson(finishedCoursesTable),
