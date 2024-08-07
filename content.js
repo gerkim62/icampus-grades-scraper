@@ -87,7 +87,13 @@ form.addEventListener("submit", (e) => {
   console.log("Starting ID:", startId);
   console.log("Ending ID:", endId);
 
-  scrapeStudentDetails(startId, endId);
+  scrapeStudentDetails(startId, endId)
+    .then(() => {
+      form.reset();
+    })
+    .catch(() => {
+      alert("Something went wrong!");
+    });
 });
 
 async function scrapeStudentDetails(startId, endId) {
@@ -205,7 +211,7 @@ function htmlTableToJson(table) {
 
 function downloadJson(jsonArray) {
   // Convert the JavaScript array object to a JSON string
-  const jsonString = JSON.stringify(jsonArray);
+  const jsonString = JSON.stringify(jsonArray, null, 4);
 
   // Create a Blob from the JSON string
   const blob = new Blob([jsonString], { type: "application/json" });
