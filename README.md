@@ -1,8 +1,8 @@
-# iCampus Grades Scraper - Download the grades of everyone in UEAB
+# iCampus Grades Scraper - Download the grades of everyone
 
 <!-- Disclaimer -->
 
-**⚠️ Disclaimer:** This extension serves to show how insecure iCampus is. Do not misuse it for malicious intents. I will share more vulnerabilities soon, so follow me.
+**⚠️ Disclaimer:** This extension is for educational purposes only. Do not misuse it for malicious intents. I will share more vulnerabilities soon, so follow me.
 
 ## Installation
 
