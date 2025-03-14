@@ -1,4 +1,3 @@
----
 
 # iCampus Grades Scraper - Download the grades of everyone
 
@@ -35,7 +34,7 @@
 
 ## Related Projects
 
-👉 [iCampus Student Report Downloader](https://github.com/gerkim62/icampus-student-report-downloader) — Download any student's reports.
+👉 [iCampus Student Report Downloader](https://github.com/gerkim62/icampus-student-report-download) — Download any student's reports.
 
 ---
 
@@ -47,4 +46,3 @@ WhatsApp: [254715870654](tel:+254715870654)
 
 ⭐ If you find this project helpful, please **star** the repo!
 
----
